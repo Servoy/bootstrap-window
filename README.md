@@ -5,15 +5,17 @@
 
 
 ## Getting Started
-This plugin requires Grunt `~0.4.0`
-
+This project requires Grunt `~0.4.0`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
+### Building
+To build bootstrap-window, you must first change to the project directory and install the necessary dependencies:
+<pre>npm install</pre>
 
+Then, you will need to run the grunt build:
+<pre>grunt</pre>
 
-*This plugin was designed to work with Grunt 0.4.x. If you're still using grunt v0.3.x it's strongly recommended that [you upgrade](http://gruntjs.com/upgrading-from-0.3-to-0.4)!
-
-
+Once these processes have been completed, you will find the built bootstrap-window sources in the `dist` directory.
 
 ## Release History
 
@@ -22,5 +24,5 @@ If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out th
 
 ---
 
-bootstrap-window is created and maintained by Elden Armbrust
+bootstrap-window is created and maintained by [Elden Armbrust](http://www.linkedin.com/in/eldenarmbrust)
 
