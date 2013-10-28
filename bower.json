@@ -1,6 +1,6 @@
 {
-  "name": "simple-bower",
-  "version": "0.0.0",
+  "name": "bootstrap-window",
+  "version": "0.0.3",
   "dependencies": {
     "bootstrap": "~3.0.0"
   },
