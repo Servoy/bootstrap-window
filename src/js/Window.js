@@ -26,7 +26,7 @@
                 _window.$el.css('top', ($(window).height()/2) - (_window.$el.height()/2));
             }
             initHandlers();
-            _window.$el.show();
+            _window.$el.fadeIn();
             if (_window.options.id) {
                 _window.id = _window.options.id;
             } else {
@@ -39,9 +39,13 @@
 
         var close = function () {
             _window.$el.trigger('close');
-            _window.$el.remove();
+            _window.$el.fadeOut(400, function () {
+                _window.$el.remove();
+            });
             if (_window.$windowTab) {
-                _window.$windowTab.remove();
+                _window.$windowTab.fadeOut(400, function () {
+                    _window.$windowTab.remove();
+                });
             }
         };
 

@@ -1,4 +1,4 @@
-# bootstrap-window v0.0.3
+# bootstrap-window
 
 > bootstrap-window is a bootstrap 3.0.0 compatible window and window management solution.  bootstrap-window provides the ability to create event driven windows based on the bootstrap styles.
 
@@ -18,7 +18,9 @@ Then, you will need to run the grunt build:
 Once these processes have been completed, you will find the built bootstrap-window sources in the `dist` directory.
 
 ## Release History
-
+ * 2013-10-28   v0.0.6   Improved versioning in preparation for initial minor release, windows now fade to match the normal bootstrap modal
+ * 2013-10-28   v0.0.5   Updated to add readme and improve details
+ * 2013-10-28   v0.0.4   Minor updates
  * 2013-10-28   v0.0.3   First public source release
 
 
