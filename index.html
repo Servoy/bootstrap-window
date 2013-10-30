@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Bootstrap-window : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Bootstrap-window</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/earmbrust/bootstrap-window">View on GitHub</a>
+
+          <h1 id="project_title">Bootstrap-window</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/earmbrust/bootstrap-window/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/earmbrust/bootstrap-window/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="bootstrap-window" class="anchor" href="#bootstrap-window"><span class="octicon octicon-link"></span></a>bootstrap-window</h1>
+
+<blockquote>
+<p>bootstrap-window is a bootstrap 3.0.0 compatible window and window management solution.  bootstrap-window provides the ability to create event driven windows based on the bootstrap styles.</p>
+</blockquote>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>This project requires Grunt <code>~0.4.0</code>
+If you haven't used <a href="http://gruntjs.com/">Grunt</a> before, be sure to check out the <a href="http://gruntjs.com/getting-started">Getting Started</a> guide, as it explains how to create a <a href="http://gruntjs.com/sample-gruntfile">Gruntfile</a> as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:</p>
+
+<h3>
+<a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h3>
+
+<p>To build bootstrap-window, you must first change to the project directory and install the necessary dependencies:</p>
+
+<pre>npm install</pre>
+
+<p>Then, you will need to run the grunt build:</p>
+
+<pre>grunt</pre>
+
+<p>Once these processes have been completed, you will find the built bootstrap-window sources in the <code>dist</code> directory.</p>
+
+<h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>Below is an example of using bootstrap-window programmatically.</p>
+
+<h4>
+<a name="windowmanager" class="anchor" href="#windowmanager"><span class="octicon octicon-link"></span></a>WindowManager</h4>
+
+<pre>
+    var windowManager = new WindowManager({
+        container: "#windowPane",
+        windowTemplate: $('#template_element').html()
+    });
+</pre>
+
+<h4>
+<a name="window" class="anchor" href="#window"><span class="octicon octicon-link"></span></a>Window</h4>
+
+<pre>
+    var exampleWindow = windowManager.createWindow({
+        title: "Bootstrap Window",
+        bodyContent: "some body content",
+        footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
+    });
+</pre>
+
+<h2>
+<a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release History</h2>
+
+<ul>
+<li>2013-10-29   v0.0.8  Refactored WindowManager class to better use prototype inheritance</li>
+<li>2013-10-29   v0.0.7  Major refactorization of Window class to use prototype inheritance, Added unit tests for Window class, Updated README</li>
+<li>2013-10-28   v0.0.6  Improved versioning in preparation for initial minor release, windows now fade to match the normal bootstrap modal</li>
+<li>2013-10-28   v0.0.5  Updated to add readme and improve details</li>
+<li>2013-10-28   v0.0.4  Minor updates</li>
+<li>2013-10-28   v0.0.3  First public source release</li>
+</ul><hr><p>bootstrap-window is created and maintained by <a href="http://www.linkedin.com/in/eldenarmbrust">Elden Armbrust</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Bootstrap-window maintained by <a href="https://github.com/earmbrust">earmbrust</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
