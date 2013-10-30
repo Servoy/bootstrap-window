@@ -7,7 +7,7 @@
 @borderRadius: 6px;
 
 
-div[data-dismiss=window] {
+[data-dismiss=window] {
     display: none;
 }
 
@@ -35,9 +35,7 @@ div[data-dismiss=window] {
             margin: 0;
             line-height: 1.428571429;
         }
-       [data-dismiss=window] {
-            display: block;
-        }
+
     }
     .window-body {
         position: relative;
@@ -52,6 +50,9 @@ div[data-dismiss=window] {
             margin-bottom: 0;
             margin-left: 5px;
         }
+    }
+    [data-dismiss=window] {
+        display: block;
     }
 
 }
