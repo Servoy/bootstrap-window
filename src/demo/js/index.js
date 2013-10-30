@@ -3,6 +3,7 @@
         container: "#windowPane",
         windowTemplate: $('#basic_window_template').html()
     });
+    window.wm = wm;
     var basic_counter = 0,
         table_counter = 0,
         form_counter = 0;

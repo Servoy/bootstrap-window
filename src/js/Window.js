@@ -3,26 +3,39 @@ var Window = null;
 
     "use strict";
     Window = function(options) {
-        var _window = this;
         options = options || {};
-        _window.title = options.title || 'No Title';
-        _window.bodyContent = options.bodyContent || '';
-        _window.footerContent = options.footerContent || '';
-        this.options = options;
-        this.initialize();
+        var defaults = {
+                handle: '.window-header',
+                parseHandleForTitle: true,
+                title: 'No Title',
+                bodyContent: '',
+                footerContent: ''
+            };
+        this.options = $.extend(true, defaults, options);
+        this.initialize(options);
         return this;
     };
 
-    Window.prototype.initialize = function() {
+    Window.prototype.initialize = function(options) {
 
-        if (!this.options.template) {
-            throw new Error("No template specified for window.");
+        if (this.options.fromElement) {
+            if (this.options.fromElement instanceof jQuery) {
+                this.$el = this.options.fromElement;
+            } else if (this.options.fromElement instanceof Element) {
+                this.$el = $(this.options.fromElement);
+            } else if (typeof this.options.fromElement) {
+                this.$el = $(this.options.fromElement);
+            }
+        } else {
+            if (!this.options.template) {
+                throw new Error("No template specified for window.");
+            }
+            this.$el = $(this.options.template);
+            this.$el.find('.window-title').html(this.options.title);
+            this.$el.find('.window-body').html(this.options.bodyContent);
+            this.$el.find('.window-footer').html(this.options.footerContent);
         }
-
-        this.$el = $(this.options.template);
-        this.$el.find('.window-title').html(this.title);
-        this.$el.find('.window-body').html(this.bodyContent);
-        this.$el.find('.window-footer').html(this.footerContent);
+        
 
         this.$el.hide();
         this.$el.appendTo('body');
@@ -85,7 +98,7 @@ var Window = null;
     };
 
     Window.prototype.getTitle = function() {
-        return this.title;
+        return this.options.title;
     };
 
     Window.prototype.getElement = function() {
@@ -93,7 +106,7 @@ var Window = null;
     };
 
     Window.prototype.setSticky = function(sticky) {
-        this.sticky = sticky;
+        this.options.sticky = sticky;
         if (sticky === false) {
             this.$el.css({
                 'position': 'absolute'
@@ -106,7 +119,7 @@ var Window = null;
     };
 
     Window.prototype.getSticky = function() {
-        return this.sticky;
+        return this.options.sticky;
     };
 
     Window.prototype.initHandlers = function() {
@@ -120,23 +133,23 @@ var Window = null;
         this.$el.on('mousedown', function() {
             _this.$el.trigger('focused');
         });
-        this.$el.find('.window-header').off('mousedown');
-        this.$el.find('.window-header').on('mousedown', function(event) {
+        this.$el.find(this.options.handle).off('mousedown');
+        this.$el.find(this.options.handle).on('mousedown', function(event) {
             _this.moving = true;
             _this.offset = {};
             _this.offset.x = event.pageX - _this.$el.position().left;
             _this.offset.y = event.pageY - _this.$el.position().top;
             $('body > *').addClass('disable-select');
         });
-        this.$el.find('.window-header').on('mouseup', function(event) {
+        this.$el.find(_this.options.handle).on('mouseup', function(event) {
             _this.moving = false;
             $('body > *').removeClass('disable-select');
         });
 
         $('body').on('mousemove', function(event) {
             if (_this.moving) {
-                var top = _this.$el.find('.window-header').position().top;
-                var left = _this.$el.find('.window-header').position().left;
+                var top = _this.$el.find(_this.options.handle).position().top;
+                var left = _this.$el.find(_this.options.handle).position().left;
                 _this.$el.css('top', event.pageY - _this.offset.y);
                 _this.$el.css('left', event.pageX - _this.offset.x);
             }
@@ -144,5 +157,57 @@ var Window = null;
 
 
     };
+
+ 
+    $.fn.window = function(options) {
+        options = options || {};
+        var newWindow,
+            window_opts = {
+                fromElement: this
+            };
+        if (typeof options === "object") {
+            if (options.handle) {
+                window_opts.handle = options.handle;
+                this.find(options.handle).css('cursor', 'move');
+            }
+            if (!this.hasClass('window')) {
+                this.addClass('window');
+            }
+            newWindow = new Window(window_opts);
+            this.data('window', newWindow);
+            
+
+        } else if (typeof options === "string") {
+            switch (options) {
+                case "close":
+                    this.data('window').close();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        return this;
+        
+    };
+
+    $('[data-window-target]').off('click');
+    $('[data-window-target]').on('click', function () {
+        var $this = $(this),
+            opts = {};
+        if ($this.data('windowTitle')) {
+            opts.title = $this.data('windowTitle');
+        }
+
+        if ($this.data('windowHandle')) {
+            opts.handle = $this.data('windowHandle');
+        }
+
+        $($this.data('windowTarget')).window(opts); 
+    });  
+
+ 
+
 
 }(jQuery));

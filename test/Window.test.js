@@ -33,12 +33,12 @@
     });
 
     test('setSticky', function () {
-        ok(typeof win.sticky === "undefined", "sticky mode not set by default");
+        ok(typeof win.options.sticky === "undefined", "sticky mode not set by default");
         win.setSticky(true);
-        ok(win.sticky === true, "setSticky() properly sets sticky mode: true");
+        ok(win.options.sticky === true, "setSticky() properly sets sticky mode: true");
         ok(win.getElement().css('position') === 'fixed', 'getSticky() properly sets css attribute: true');
         win.setSticky(false);
-        ok(win.sticky === false, "setSticky() properly sets sticky mode: false");
+        ok(win.options.sticky === false, "setSticky() properly sets sticky mode: false");
         ok(win.getElement().css('position') === 'absolute', 'getSticky() properly sets css attribute: false');
     });
 

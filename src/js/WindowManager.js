@@ -57,6 +57,39 @@ var WindowManager = null;
         }
     };
 
+    WindowManager.prototype.addWindow = function(window_object) {
+        var _this = this;
+        window_object.getElement().on('focused', function(event) {
+            _this.setFocused(window_object);
+        });
+        window_object.getElement().on('close', function() {
+            _this.destroyWindow(window_object);
+            if (window_object.getWindowTab()) {
+                window_object.getWindowTab().remove();
+            }
+        });
+
+        if (this.options.container) {
+            window_object.setWindowTab($('<span class="label label-default">' + window_object.getTitle() + '<button class="close">x</button></span>'));
+            window_object.getWindowTab().find('.close').on('click', function(event) {
+                window_object.close();
+            });
+            window_object.getWindowTab().on('click', function(event) {
+                _this.setFocused(window_object);
+                if (window_object.getSticky()) {
+                    window.scrollTo(0, window_object.getElement().position().top);
+                }
+
+            });
+
+            $(this.options.container).append(window_object.getWindowTab());
+        }
+
+        this.windows.push(window_object);
+        this.setFocused(window_object);
+        return window_object;
+    };
+
     WindowManager.prototype.createWindow = function(window_options) {
         var _this = this;
         var final_options = Object.create(window_options);
@@ -65,35 +98,8 @@ var WindowManager = null;
         }
 
         var newWindow = new Window(final_options);
-        var focusedWindowIndex;
-        newWindow.getElement().on('focused', function(event) {
-            _this.setFocused(newWindow);
-        });
-        newWindow.getElement().on('close', function() {
-            _this.destroyWindow(newWindow);
-            if (newWindow.getWindowTab()) {
-                newWindow.getWindowTab().remove();
-            }
-        });
-
-        if (this.options.container) {
-            newWindow.setWindowTab($('<span class="label label-default">' + newWindow.getTitle() + '<button class="close">x</button></span>'));
-            newWindow.getWindowTab().find('.close').on('click', function(event) {
-                newWindow.close();
-            });
-            newWindow.getWindowTab().on('click', function(event) {
-                _this.setFocused(newWindow);
-                if (newWindow.getSticky()) {
-                    window.scrollTo(0, newWindow.getElement().position().top);
-                }
-
-            });
-
-            $(this.options.container).append(newWindow.getWindowTab());
-        }
-
-        this.windows.push(newWindow);
-        this.setFocused(newWindow);
-        return newWindow;
+        
+        
+        return this.addWindow(newWindow);
     };
 }(jQuery));

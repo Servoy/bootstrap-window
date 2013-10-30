@@ -7,15 +7,15 @@
 @borderRadius: 6px;
 
 
-
+div[data-dismiss=window] {
+    display: none;
+}
 
 .window {
-    width: 600px;
+    max-width: 600px;
     position: absolute;
     min-width: 200px;
     min-height: 125px;
-
-
     background-color: @modal-content-bg;
     border: 1px solid @modal-content-fallback-border-color;
     border: 1px solid @modal-content-border-color;
@@ -35,6 +35,9 @@
             margin: 0;
             line-height: 1.428571429;
         }
+       [data-dismiss=window] {
+            display: block;
+        }
     }
     .window-body {
         position: relative;
@@ -50,6 +53,7 @@
             margin-left: 5px;
         }
     }
+
 }
 
 .window.active .window-header .window-title {

@@ -3,7 +3,7 @@
   <head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap-window.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/index.css">
   </head>
   <body>
       <div class="navbar navbar-inverse navbar-fixed-top">
@@ -18,16 +18,11 @@
               </span>
             </button>
             <a class="navbar-brand" href="#">
-              Bootstrap theme
+              bootstrap-window
             </a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active">
-                <a href="#">
-                  Home
-                </a>
-              </li>
               <li class="new_basic">
                 <a href="#">
                   Add Basic Window
@@ -64,11 +59,24 @@
             This template is being used to demonstrate the functionality of the bootstrap-window objects, how they interact with other bootstrap elements, and how the Window Manager can help.  Click a button in the nav-bar to start the demonstration.
           </p>
           <p>
-            <a class="btn btn-primary btn-lg">
-              Learn more »
+            <a class="btn btn-primary btn-lg" data-window-target="#quickWindow" data-window-title="About bootstrap-window" data-window-handle=".panel-heading">
+              Learn more &raquo;
             </a>
           </p>
         </div>
+            <div class="panel panel-primary" id="quickWindow">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Quick Window
+                  <button class="close" data-dismiss="window">x</button>
+                </h3>
+              </div>
+              <div class="panel-body">
+                <h4>bootstrap-window is the simply named, hugely powerful, daringly dapper, and quintessentially quaint windowing library for the popular Bootstrap front-end framework.</h4>
+                <p>bootstrap-window is developed with the idea of creating a responsive windowing system based on the Bootstrap front-end framework.</p>
+                <p>Head zookeeper in charge of the care and feeding of bootstrap-window is none other than Elden Armbrust.</p>
+              </div>
+            </div>
         
         
         
@@ -888,6 +896,6 @@
       <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
       
       <script type="text/javascript" src="js/bootstrap-window.js"></script>
-      <script type="text/javascript" src="index.js"></script>
+      <script type="text/javascript" src="js/index.js"></script>
   </body>
 </html>
