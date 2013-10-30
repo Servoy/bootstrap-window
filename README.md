@@ -23,7 +23,7 @@ Below is an example of using bootstrap-window programmatically.
 <pre>
     var windowManager = new WindowManager({
         container: "#windowPane",
-        windowTemplate: $('#basic_window_template').html()
+        windowTemplate: $('#template_element').html()
     });
 </pre>
 #### Window
@@ -35,7 +35,8 @@ Below is an example of using bootstrap-window programmatically.
     });
 </pre>
 ## Release History
- * 2013-10-28   v0.0.7  Major refactorization of Window class to use prototype inheritance, Added unit tests for Window class, Updated README
+ * 2013-10-29   v0.0.8  Refactored WindowManager class to better use prototype inheritance
+ * 2013-10-29   v0.0.7  Major refactorization of Window class to use prototype inheritance, Added unit tests for Window class, Updated README
  * 2013-10-28   v0.0.6  Improved versioning in preparation for initial minor release, windows now fade to match the normal bootstrap modal
  * 2013-10-28   v0.0.5  Updated to add readme and improve details
  * 2013-10-28   v0.0.4  Minor updates
