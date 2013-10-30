@@ -9,7 +9,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: ['src/js/**/*.js'],
-                dest: 'dist/js/<%= pkg.name %>-<%= pkg.version %>.js'
+                dest: 'dist/js/<%= pkg.name %>.js'
             }
         },
         uglify: {
@@ -18,7 +18,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'dist/js/<%= pkg.name %>-<%= pkg.version %>.min.js': ['<%= concat.dist.dest %>']
+                    'dist/js/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
                 }
             }
         },
@@ -29,10 +29,7 @@ module.exports = function (grunt) {
             files: ['Gruntfile.js', 'src/js/**/*.js', 'test/**/*.js'],
             options: {
                 globals: {
-                    jQuery: true,
-                    console: true,
-                    module: true,
-                    document: true
+                    jQuery: true
                 }
             }
         },
@@ -52,7 +49,7 @@ module.exports = function (grunt) {
             install: {
                 options: {
                     layout: 'byType',
-                    cleanBowerDir: true
+                    cleanBowerDir: false
                 }
             }
         },
@@ -114,10 +111,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bower-task');
 
 
-    grunt.registerTask('test', ['jshint', 'qunit']);
-    grunt.registerTask('build', ['concat', 'less', 'cssmin', 'uglify']);
+    grunt.registerTask('test', ['bower', 'jshint', 'qunit']);
+    grunt.registerTask('build', ['bower', 'concat', 'less', 'cssmin', 'uglify']);
 
-    grunt.registerTask('default', ['bower', 'jshint', 'build']);
+    grunt.registerTask('default', ['test', 'build']);
 
     grunt.registerTask('demo', ['default', 'copy', 'connect']);
 

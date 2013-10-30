@@ -1,6 +1,17 @@
 {
   "name": "bootstrap-window",
-  "version": "0.0.3",
+  "version": "0.0.7",
+  "homepage": "https://github.com/earmbrust/bootstrap-window",
+  "author": {
+    "name": "Elden Armbrust",
+    "url": "http://www.linkedin.com/in/eldenarmbrust"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.0",

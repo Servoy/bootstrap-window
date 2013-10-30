@@ -6,8 +6,6 @@
     var basic_counter = 0,
         table_counter = 0,
         form_counter = 0;
-    window.wm = wm;
-
     
     $('.new_basic').on('click', function (event) {
         event.preventDefault();

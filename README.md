@@ -17,11 +17,29 @@ Then, you will need to run the grunt build:
 
 Once these processes have been completed, you will find the built bootstrap-window sources in the `dist` directory.
 
+### Usage
+Below is an example of using bootstrap-window programmatically.
+#### WindowManager
+<pre>
+    var windowManager = new WindowManager({
+        container: "#windowPane",
+        windowTemplate: $('#basic_window_template').html()
+    });
+</pre>
+#### Window
+<pre>
+    var exampleWindow = windowManager.createWindow({
+        title: "Bootstrap Window",
+        bodyContent: "some body content",
+        footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
+    });
+</pre>
 ## Release History
- * 2013-10-28   v0.0.6   Improved versioning in preparation for initial minor release, windows now fade to match the normal bootstrap modal
- * 2013-10-28   v0.0.5   Updated to add readme and improve details
- * 2013-10-28   v0.0.4   Minor updates
- * 2013-10-28   v0.0.3   First public source release
+ * 2013-10-28   v0.0.7  Major refactorization of Window class to use prototype inheritance, Added unit tests for Window class, Updated README
+ * 2013-10-28   v0.0.6  Improved versioning in preparation for initial minor release, windows now fade to match the normal bootstrap modal
+ * 2013-10-28   v0.0.5  Updated to add readme and improve details
+ * 2013-10-28   v0.0.4  Minor updates
+ * 2013-10-28   v0.0.3  First public source release
 
 
 ---
