@@ -17,24 +17,54 @@ Then, you will need to run the grunt build:
 
 Once these processes have been completed, you will find the built bootstrap-window sources in the `dist` directory.
 
-### Usage
-Below is an example of using bootstrap-window programmatically.
-#### WindowManager
+### Installing
+bootstrap-window may be easily installed using the bower package manager by Twitter.
+Please see the instructions for [installing bower](http://bower.io/#installing-bower) to get started.
+Once you have installed bower and read the [installing bower packages](http://bower.io/#installing-packages-and-dependencies) section, you can install bootstrap-window by running:
 <pre>
-    var windowManager = new WindowManager({
-        container: "#windowPane",
-        windowTemplate: $('#template_element').html()
-    });
+bower install bootstrap-window
 </pre>
-#### Window
+
+### Basic Usage
+Below is an example of using bootstrap-window programmatically.
+
+#### Standalone Window
+Creating a standalone Window, a Window that has no attachment to a WindowManager, only takes a few parameters to get up and running.
 <pre>
-    var exampleWindow = windowManager.createWindow({
-        title: "Bootstrap Window",
-        bodyContent: "some body content",
-        footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
-    });
+var exampleWindow = new Window({
+    template: $('#template_element').html(),
+    title: "Bootstrap Window",
+    bodyContent: "some body content",
+    footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
+});
+</pre>
+#### WindowManager and managed Windows
+First, you'll need to create a new WindowManager.
+<pre>
+var windowManager = new WindowManager({
+    container: "#windowPane",
+    windowTemplate: $('#template_element').html()
+});
+</pre>
+
+Once you have created the WindowManager, you can create Windows using the factory method.
+<pre>
+var exampleWindow = windowManager.createWindow({
+    title: "Bootstrap Window",
+    bodyContent: "some body content",
+    footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
+});
+</pre>
+
+
+#### Quick Window
+Quick Windows can be created via a simple markup API.
+
+<pre>
+&lt;a class=&quot;btn&quot; data-window-target=&quot;#windowElementSelector&quot; data-window-title=&quot;Window Title&quot; data-window-handle=&quot;.handleSelector&quot;&gt;
 </pre>
 ## Release History
+ * 2013-10-29   v0.1.0  Added parent/child window relationship, started adding window resizing
  * 2013-10-29   v0.0.8  Refactored WindowManager class to better use prototype inheritance
  * 2013-10-29   v0.0.7  Major refactorization of Window class to use prototype inheritance, Added unit tests for Window class, Updated README
  * 2013-10-28   v0.0.6  Improved versioning in preparation for initial minor release, windows now fade to match the normal bootstrap modal

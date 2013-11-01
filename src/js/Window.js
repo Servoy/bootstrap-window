@@ -61,6 +61,12 @@ var Window = null;
     Window.prototype.close = function() {
         var _this = this;
         this.$el.trigger('close');
+        if (this.options.parent) {
+            this.options.parent.clearBlocker();
+            if (this.options.window_manager) {
+                this.options.window_manager.setFocused(this.options.parent);
+            }
+        }
         this.$el.fadeOut(400, function() {
             _this.$el.remove();
         });
@@ -69,6 +75,7 @@ var Window = null;
                 _this.$windowTab.remove();
             });
         }
+
     };
 
     Window.prototype.setActive = function(active) {
@@ -122,19 +129,72 @@ var Window = null;
         return this.options.sticky;
     };
 
+    Window.prototype.setManager = function (window_manager) {
+        this.options.window_manager = window_manager;
+    };
+
     Window.prototype.initHandlers = function() {
         var _this = this;
 
         this.$el.find('[data-dismiss=window]').on('click', function(event) {
+            if (_this.options.blocker) {
+                return;
+            }
             _this.close();
         });
 
         this.$el.off('mousedown');
         this.$el.on('mousedown', function() {
-            _this.$el.trigger('focused');
+            if (_this.options.blocker) {
+                _this.options.blocker.getElement().trigger('focused');
+                _this.options.blocker.blink();
+                return;
+            } else {
+                _this.$el.trigger('focused');
+            }
+            
+            if (_this.$el.hasClass('ns-resize') || _this.$el.hasClass('ew-resize')) {
+                $('body > *').addClass('disable-select');
+                _this.resizing = true;
+                _this.offset = {};
+                _this.offset.x = event.pageX;
+                _this.offset.y = event.pageY;
+                _this.window_info = {
+                    top: _this.$el.position().top,
+                    left: _this.$el.position().left,
+                    width: _this.$el.width(),
+                    height: _this.$el.height()
+                };
+
+                if (event.offsetY < 5) {
+                    _this.$el.addClass('north');
+                }
+                if (event.offsetY > (_this.$el.height() - 5)) {
+                    _this.$el.addClass('south');
+                }
+                if (event.offsetX < 5) {
+                    _this.$el.addClass('west');
+                }
+                if (event.offsetX > (_this.$el.width() - 5)) {
+                    _this.$el.addClass('east');
+                }
+            }
+        });
+
+        $('body').on('mouseup', function () {
+            _this.resizing = false;
+            $('body > *').removeClass('disable-select');
+            _this.$el.removeClass('west');
+            _this.$el.removeClass('east');
+            _this.$el.removeClass('north');
+            _this.$el.removeClass('south');
+
         });
         this.$el.find(this.options.handle).off('mousedown');
         this.$el.find(this.options.handle).on('mousedown', function(event) {
+            if (_this.options.blocker) {
+                return;
+            }
             _this.moving = true;
             _this.offset = {};
             _this.offset.x = event.pageX - _this.$el.position().left;
@@ -153,11 +213,110 @@ var Window = null;
                 _this.$el.css('top', event.pageY - _this.offset.y);
                 _this.$el.css('left', event.pageX - _this.offset.x);
             }
+            if (_this.options.resizable && _this.resizing) {
+                if (_this.$el.hasClass("east")) {
+                    _this.$el.css('width', event.pageX - _this.window_info.left);
+                }
+                if (_this.$el.hasClass("west")) {
+                    
+                    _this.$el.css('left', event.pageX);
+                    _this.$el.css('width', _this.window_info.width + (_this.window_info.left  - event.pageX));
+                }
+                if (_this.$el.hasClass("south")) {
+                    _this.$el.css('height', event.pageY - _this.window_info.top);
+                }
+                if (_this.$el.hasClass("north")) {
+                    _this.$el.css('top', event.pageY);
+                    _this.$el.css('height', _this.window_info.height + (_this.window_info.top  - event.pageY));
+                }
+            }
         });
 
+        this.$el.on('mousemove', function (event) {
+            if (_this.options.blocker) {
+                return;
+            }
+            if (_this.options.resizable) {
+                if (event.offsetY > (_this.$el.height() - 5) || event.offsetY < 5) {
+                    _this.$el.addClass('ns-resize');
+                } else {
+                    _this.$el.removeClass('ns-resize');
+                }
+                if (event.offsetX > (_this.$el.width() - 5) || event.offsetX < 5) {
+                    _this.$el.addClass('ew-resize');
 
+                } else {
+                    _this.$el.removeClass('ew-resize');
+                }
+            }
+
+        });
     };
 
+    Window.prototype.resize = function (options) {
+        options = options || {};
+        if (options.top) {
+            this.$el.css('top', options.top);
+        }
+        if (options.left) {
+            this.$el.css('left', options.left);
+        }
+        if (options.height) {
+            this.$el.css('height', options.height);
+        }
+        if (options.width) {
+            this.$el.css('width', options.width);
+        }
+    };
+
+    Window.prototype.setBlocker = function (window_handle) {
+        this.options.blocker = window_handle;
+        this.$el.find('.disable-shade').remove();
+        this.$el.find('.window-body').append('<div class="disable-shade"></div>');
+        this.$el.find('.window-footer').append('<div class="disable-shade"></div>');
+        this.$el.find('.disable-shade').fadeIn();
+        if (!this.options.blocker.getParent()) {
+            this.options.blocker.setParent(this);
+        }
+    };
+
+
+    Window.prototype.getBlocker = function () {
+        return this.options.blocker;
+    };
+
+    Window.prototype.clearBlocker = function () {
+        this.$el.find('.disable-shade').fadeOut(function () {
+            this.remove();
+        });
+        delete this.options.blocker;
+    };
+
+    Window.prototype.setParent = function (window_handle) {
+        this.options.parent = window_handle;
+        if (!this.options.parent.getBlocker()) {
+            this.options.parent.setBlocker(this);
+        }
+    };
+
+    Window.prototype.getParent = function () {
+        return this.options.parent;
+    };
+
+    Window.prototype.blink = function () {
+        var _this = this,
+            active = this.$el.hasClass('active');
+
+        var blinkInterval = setInterval(function () {
+            _this.$el.toggleClass('active');
+        }, 250);
+        var blinkTimeout = setTimeout(function () {
+            clearInterval(blinkInterval);
+            if (active) {
+                _this.$el.addClass('active');
+            }
+        }, 1000);
+    };
  
     $.fn.window = function(options) {
         options = options || {};
@@ -170,8 +329,8 @@ var Window = null;
                 window_opts.handle = options.handle;
                 this.find(options.handle).css('cursor', 'move');
             }
-            if (!this.hasClass('window')) {
-                this.addClass('window');
+            if (!$(this).hasClass('window')) {
+                $(this).addClass('window');
             }
             newWindow = new Window(window_opts);
             this.data('window', newWindow);

@@ -39,6 +39,9 @@ var WindowManager = null;
 
     WindowManager.prototype.setFocused = function(focused_window) {
         var focusedWindowIndex;
+        while (focused_window.getBlocker()) {
+            focused_window = focused_window.getBlocker();
+        }
         $.each(this.windows, function(index, windowHandle) {
             windowHandle.setActive(false);
             if (windowHandle === focused_window) {
@@ -46,8 +49,11 @@ var WindowManager = null;
             }
         });
         this.windows.push(this.windows.splice(focusedWindowIndex, 1)[0]);
-        this.resortWindows();
+        
+
         focused_window.setActive(true);
+        this.resortWindows();
+
     };
 
     WindowManager.prototype.initialize = function(options) {
@@ -86,6 +92,7 @@ var WindowManager = null;
         }
 
         this.windows.push(window_object);
+        window_object.setManager(this);
         this.setFocused(window_object);
         return window_object;
     };
