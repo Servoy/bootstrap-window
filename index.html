@@ -3,6 +3,7 @@
   <head>
     <title>bootstrap-window - The daringly dapper windowing solution for bootstrap</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap-window.css">
     <link rel="stylesheet" href="css/index.css">
   </head>
@@ -38,6 +39,11 @@
               <li class="new_form">
                 <a href="#">
                   Add Form Window
+                </a>
+              </li>
+              <li class="new_parent">
+                <a href="#">
+                  Add Parent Window
                 </a>
               </li>
               <li class="new_modal">
@@ -863,7 +869,23 @@
         </form>
       </script>
       
-      
+      <script type="template/text" id="parent_window_template">
+        <div class="window">
+          <div class="window-header">
+            <button type="button" class="close" data-dismiss="window" aria-hidden="true">
+              x
+            </button>
+            <h4 class="window-title">
+            </h4>
+          </div>
+          <div class="window-body">
+          <button type="button" class="btn btn-default new_child">Open child</button>
+          </div>
+          <div class="window-footer">
+            
+          </div>
+        </div>
+      </script>
       <!-- Modal -->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
