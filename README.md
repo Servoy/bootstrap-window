@@ -30,41 +30,41 @@ Below is an example of using bootstrap-window programmatically.
 
 #### Standalone Window
 Creating a standalone Window, a Window that has no attachment to a WindowManager, only takes a few parameters to get up and running.
-<pre>
+```javascript
 var exampleWindow = new Window({
     template: $('#template_element').html(),
     title: "Bootstrap Window",
     bodyContent: "some body content",
     footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
 });
-</pre>
+```
 #### WindowManager and managed Windows
 First, you'll need to create a new WindowManager.
-<pre>
+```javascript
 var windowManager = new WindowManager({
     container: "#windowPane",
     windowTemplate: $('#template_element').html()
 });
-</pre>
+```
 
 Once you have created the WindowManager, you can create Windows using the factory method.
-<pre>
+```javascript
 var exampleWindow = windowManager.createWindow({
     title: "Bootstrap Window",
     bodyContent: "some body content",
-    footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
+    footerContent: '<button type="button" class="btn btn-default" data-dismiss="window">Close</button><button type="button" class="btn btn-primary">Submit</button>'
 });
-</pre>
+```
 
 
 #### Quick Window
 Quick Windows can be created via a simple markup API.
 
-<pre>
-&lt;a class=&quot;btn&quot; data-window-target=&quot;#windowElementSelector&quot; data-window-title=&quot;Window Title&quot; data-window-handle=&quot;.handleSelector&quot;&gt;
-</pre>
+```html
+<a class="btn" data-window-target="#windowElementSelector" data-window-title="Window Title" data-window-handle=".handleSelector">
+```
 ## Release History
- * 2013-10-29   v0.1.1  Added support for the jQuery Plugin site
+ * 2013-11-01   v0.1.1  Added support for the jQuery Plugin site
  * 2013-10-29   v0.1.0  Added parent/child window relationship, started adding window resizing
  * 2013-10-29   v0.0.8  Refactored WindowManager class to better use prototype inheritance
  * 2013-10-29   v0.0.7  Major refactorization of Window class to use prototype inheritance, Added unit tests for Window class, Updated README
@@ -77,4 +77,3 @@ Quick Windows can be created via a simple markup API.
 ---
 
 bootstrap-window is created and maintained by [Elden Armbrust](http://www.linkedin.com/in/eldenarmbrust)
-
