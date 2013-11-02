@@ -1,4 +1,4 @@
-# bootstrap-window
+# bootstrap-window [![Build Status](https://secure.travis-ci.org/earmbrust/bootstrap-window.png?branch=master)](http://travis-ci.org/earmbrust/bootstrap-window)
 
 > bootstrap-window is a bootstrap 3.0.0 compatible window and window management solution.  bootstrap-window provides the ability to create event driven windows based on the bootstrap styles.
 
