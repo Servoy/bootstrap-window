@@ -35,7 +35,7 @@ var exampleWindow = new Window({
     template: $('#template_element').html(),
     title: "Bootstrap Window",
     bodyContent: "some body content",
-    footerContent: '&lt;button type="button" class="btn btn-default" data-dismiss="window"&gt;Close&lt;/button&gt;&lt;button type="button" class="btn btn-primary"&gt;Submit&lt;/button&gt;'
+    footerContent: '<button type="button" class="btn btn-default" data-dismiss="window">Close</button><button type="button" class="btn btn-primary">Submit</button>'
 });
 ```
 #### WindowManager and managed Windows
