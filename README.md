@@ -64,7 +64,7 @@ Quick Windows can be created via a simple markup API.
 <a class="btn" data-window-target="#windowElementSelector" data-window-title="Window Title" data-window-handle=".handleSelector">
 ```
 ## Release History
- * 2013-11-01   v0.1.1  Added support for the jQuery Plugin site
+ * 2013-11-03   v0.1.1  Added support for the jQuery Plugin site
  * 2013-10-29   v0.1.0  Added parent/child window relationship, started adding window resizing
  * 2013-10-29   v0.0.8  Refactored WindowManager class to better use prototype inheritance
  * 2013-10-29   v0.0.7  Major refactorization of Window class to use prototype inheritance, Added unit tests for Window class, Updated README
