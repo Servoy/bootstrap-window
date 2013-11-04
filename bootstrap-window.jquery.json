@@ -2,7 +2,8 @@
     "name": "bootstrap-window",
     "version": "0.1.2",
     "author": {
-        "name" : "Elden Armbrust"
+        "name" : "Elden Armbrust",
+        "email": "earmbrust@gmail.com"
     },
     "title": "bootstrap-window - the daringly dapper windowing solution for Bootstrap",
     "dependencies": {
