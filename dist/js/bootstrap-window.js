@@ -66,6 +66,8 @@ var Window = null;
             if (this.options.window_manager) {
                 this.options.window_manager.setFocused(this.options.parent);
             }
+        } else if (this.options.window_manager && this.options.window_manager.windows.length > 0) {
+            this.options.window_manager.setNextFocused();
         }
         this.$el.fadeOut(400, function() {
             _this.$el.remove();
@@ -435,6 +437,10 @@ var Window = null;
         }
     };
 
+    WindowManager.prototype.setNextFocused = function () {
+        this.setFocused(this.windows[this.windows.length-1]);
+    };
+
     WindowManager.prototype.addWindow = function(window_object) {
         var _this = this;
         window_object.getElement().on('focused', function(event) {
@@ -445,6 +451,7 @@ var Window = null;
             if (window_object.getWindowTab()) {
                 window_object.getWindowTab().remove();
             }
+
         });
 
         if (this.options.container) {

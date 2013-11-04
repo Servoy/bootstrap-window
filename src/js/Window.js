@@ -66,6 +66,8 @@ var Window = null;
             if (this.options.window_manager) {
                 this.options.window_manager.setFocused(this.options.parent);
             }
+        } else if (this.options.window_manager && this.options.window_manager.windows.length > 0) {
+            this.options.window_manager.setNextFocused();
         }
         this.$el.fadeOut(400, function() {
             _this.$el.remove();

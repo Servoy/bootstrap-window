@@ -63,6 +63,10 @@ var WindowManager = null;
         }
     };
 
+    WindowManager.prototype.setNextFocused = function () {
+        this.setFocused(this.windows[this.windows.length-1]);
+    };
+
     WindowManager.prototype.addWindow = function(window_object) {
         var _this = this;
         window_object.getElement().on('focused', function(event) {
@@ -73,6 +77,7 @@ var WindowManager = null;
             if (window_object.getWindowTab()) {
                 window_object.getWindowTab().remove();
             }
+
         });
 
         if (this.options.container) {
