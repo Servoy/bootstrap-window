@@ -37,16 +37,30 @@ var Window = null;
         }
         
 
-        this.$el.hide();
+        this.$el.css('visibility', 'hidden');
         this.$el.appendTo('body');
+        var top, left,
+            bodyTop = parseInt($('body').position().top, 10) + parseInt($('body').css('paddingTop'), 10),
+            maxHeight;
         if (!this.options.sticky) {
-            this.$el.css('left', ($(window).width() / 2) - (this.$el.width() / 2));
-            this.$el.css('top', ($(window).height() / 2) - (this.$el.height() / 2));
+            left = ($(window).width() / 2) - (this.$el.width() / 2);
+            top = ($(window).height() / 2) - (this.$el.height() / 2);
         } else {
-            this.$el.css('left', ($(window).width() / 2) - (this.$el.width() / 2));
-            this.$el.css('top', ($(window).height() / 2) - (this.$el.height() / 2));
+            left = ($(window).width() / 2) - (this.$el.width() / 2);
+            top = ($(window).height() / 2) - (this.$el.height() / 2);
         }
+
+        if (top < bodyTop) {
+            top = bodyTop;
+        }
+        maxHeight = (($(window).height() - bodyTop) - (parseInt(this.$el.children('.window-header').css('height'), 10) + parseInt(this.$el.children('.window-footer').css('height'), 10))) - 45;
+        this.$el.children('.window-body').css('maxHeight', maxHeight);
+
+        this.$el.css('left', left);
+        this.$el.css('top', top);
         this.initHandlers();
+        this.$el.hide();
+        this.$el.css('visibility', 'visible');
         this.$el.fadeIn();
         if (this.options.id) {
             this.id = this.options.id;
