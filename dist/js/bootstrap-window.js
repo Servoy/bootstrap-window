@@ -5,80 +5,101 @@ var Window = null;
     Window = function(options) {
         options = options || {};
         var defaults = {
-                handle: '.window-header',
+                selectors: {
+                    handle: '.window-header',
+                    title: '.window-title',
+                    body: '.window-body',
+                    footer: '.window-footer'
+                },
+                elements: {
+                    handle: null,
+                    title: null,
+                    body: null,
+                    footer: null
+                },
+                references: {
+                    body: $('body'),
+                    window: $(window)
+                },
                 parseHandleForTitle: true,
                 title: 'No Title',
                 bodyContent: '',
                 footerContent: ''
             };
         this.options = $.extend(true, defaults, options);
-        this.initialize(options);
+        this.initialize(this.options);
         return this;
     };
 
     Window.prototype.initialize = function(options) {
         var _this = this;
 
-        if (this.options.fromElement) {
-            if (this.options.fromElement instanceof jQuery) {
-                this.$el = this.options.fromElement;
-            } else if (this.options.fromElement instanceof Element) {
-                this.$el = $(this.options.fromElement);
-            } else if (typeof this.options.fromElement) {
-                this.$el = $(this.options.fromElement);
+        if (options.fromElement) {
+            if (options.fromElement instanceof jQuery) {
+                this.$el = options.fromElement;
+            } else if (options.fromElement instanceof Element) {
+                this.$el = $(options.fromElement);
+            } else if (typeof options.fromElement) {
+                this.$el = $(options.fromElement);
             }
+        } else if (options.template) {
+            this.$el = $(options.template);
         } else {
-            if (!this.options.template) {
-                throw new Error("No template specified for window.");
-            }
-            this.$el = $(this.options.template);
-            this.$el.find('.window-title').html(this.options.title);
-            this.$el.find('.window-body').html(this.options.bodyContent);
-            this.$el.find('.window-footer').html(this.options.footerContent);
+            throw new Error("No template specified for window.");
         }
+
+        options.elements.handle = this.$el.find(options.selectors.handle);
+        options.elements.title = this.$el.find(options.selectors.title);
+        options.elements.body = this.$el.find(options.selectors.body);
+        options.elements.footer = this.$el.find(options.selectors.footer);
+        options.elements.title.html(options.title);
+        options.elements.body.html(options.bodyContent);
+        options.elements.footer.html(options.footerContent);
         
 
         this.$el.css('visibility', 'hidden');
         this.$el.appendTo('body');
         this.centerWindow();
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-            $(window).bind('orientationchange resize', function(event){
+            this.options.references.window.bind('orientationchange resize', function(event){
                 _this.centerWindow();
             });
         }
 
+        this.$el.on('touchmove',function(e){
+              e.stopPropagation();
+        });
 
         this.initHandlers();
         this.$el.hide();
         this.$el.css('visibility', 'visible');
         this.$el.fadeIn();
-        if (this.options.id) {
-            this.id = this.options.id;
+        if (options.id) {
+            this.id = options.id;
         } else {
             this.id = '';
         }
 
-        this.setSticky(this.options.sticky);
-
+        this.setSticky(options.sticky);
     };
 
     Window.prototype.centerWindow = function () {
         var top, left,
-            bodyTop = parseInt($('body').position().top, 10) + parseInt($('body').css('paddingTop'), 10),
+            bodyTop = parseInt(this.options.references.body.position().top, 10) + parseInt(this.options.references.body.css('paddingTop'), 10),
             maxHeight;
         if (!this.options.sticky) {
-            left = ($(window).width() / 2) - (this.$el.width() / 2);
-            top = ($(window).height() / 2) - (this.$el.height() / 2);
+            left = (this.options.references.window.width() / 2) - (this.$el.width() / 2);
+            top = (this.options.references.window.height() / 2) - (this.$el.height() / 2);
         } else {
-            left = ($(window).width() / 2) - (this.$el.width() / 2);
-            top = ($(window).height() / 2) - (this.$el.height() / 2);
+            left = (this.options.references.window.width() / 2) - (this.$el.width() / 2);
+            top = (this.options.references.window.height() / 2) - (this.$el.height() / 2);
         }
 
         if (top < bodyTop) {
             top = bodyTop;
         }
-        maxHeight = (($(window).height() - bodyTop) - (parseInt(this.$el.children('.window-header').css('height'), 10) + parseInt(this.$el.children('.window-footer').css('height'), 10))) - 45;
-        this.$el.children('.window-body').css('maxHeight', maxHeight);
+        maxHeight = ((this.options.references.window.height() - bodyTop) - (parseInt(this.options.elements.handle.css('height'), 10) + parseInt(this.options.elements.footer.css('height'), 10))) - 45;
+        this.options.elements.body.css('maxHeight', maxHeight);
 
         this.$el.css('left', left);
         this.$el.css('top', top);
@@ -95,7 +116,7 @@ var Window = null;
         } else if (this.options.window_manager && this.options.window_manager.windows.length > 0) {
             this.options.window_manager.setNextFocused();
         }
-        this.$el.fadeOut(400, function() {
+        this.$el.fadeOut(function() {
             _this.$el.remove();
         });
         if (this.$windowTab) {
@@ -209,7 +230,7 @@ var Window = null;
             }
         });
 
-        $('body').on('mouseup', function () {
+        _this.options.references.body.on('mouseup', function () {
             _this.resizing = false;
             $('body > *').removeClass('disable-select');
             _this.$el.removeClass('west');
@@ -218,8 +239,8 @@ var Window = null;
             _this.$el.removeClass('south');
 
         });
-        this.$el.find(this.options.handle).off('mousedown');
-        this.$el.find(this.options.handle).on('mousedown', function(event) {
+        _this.options.elements.handle.off('mousedown');
+        _this.options.elements.handle.on('mousedown', function(event) {
             if (_this.options.blocker) {
                 return;
             }
@@ -229,15 +250,15 @@ var Window = null;
             _this.offset.y = event.pageY - _this.$el.position().top;
             $('body > *').addClass('disable-select');
         });
-        this.$el.find(_this.options.handle).on('mouseup', function(event) {
+        _this.options.elements.handle.on('mouseup', function(event) {
             _this.moving = false;
             $('body > *').removeClass('disable-select');
         });
 
-        $('body').on('mousemove', function(event) {
+        _this.options.references.body.on('mousemove', function(event) {
             if (_this.moving) {
-                var top = _this.$el.find(_this.options.handle).position().top;
-                var left = _this.$el.find(_this.options.handle).position().left;
+                var top = _this.options.elements.handle.position().top,
+                    left = _this.options.elements.handle.position().left;
                 _this.$el.css('top', event.pageY - _this.offset.y);
                 _this.$el.css('left', event.pageX - _this.offset.x);
             }
@@ -300,8 +321,10 @@ var Window = null;
     Window.prototype.setBlocker = function (window_handle) {
         this.options.blocker = window_handle;
         this.$el.find('.disable-shade').remove();
-        this.$el.find('.window-body').append('<div class="disable-shade"></div>');
-        this.$el.find('.window-footer').append('<div class="disable-shade"></div>');
+        var shade = '<div class="disable-shade"></div>';
+        this.options.elements.body.append(shade);
+        this.options.elements.body.addClass('disable-scroll');
+        this.options.elements.footer.append(shade);
         this.$el.find('.disable-shade').fadeIn();
         if (!this.options.blocker.getParent()) {
             this.options.blocker.setParent(this);
@@ -314,6 +337,7 @@ var Window = null;
     };
 
     Window.prototype.clearBlocker = function () {
+        this.options.elements.body.removeClass('disable-scroll');
         this.$el.find('.disable-shade').fadeOut(function () {
             this.remove();
         });
@@ -333,12 +357,12 @@ var Window = null;
 
     Window.prototype.blink = function () {
         var _this = this,
-            active = this.$el.hasClass('active');
+            active = this.$el.hasClass('active'),
 
-        var blinkInterval = setInterval(function () {
+            blinkInterval = setInterval(function () {
             _this.$el.toggleClass('active');
-        }, 250);
-        var blinkTimeout = setTimeout(function () {
+        }, 250),
+            blinkTimeout = setTimeout(function () {
             clearInterval(blinkInterval);
             if (active) {
                 _this.$el.addClass('active');
@@ -392,11 +416,7 @@ var Window = null;
         }
 
         $($this.data('windowTarget')).window(opts); 
-    });  
-
- 
-
-
+    });
 }(jQuery));
 ;var WindowManager = null;
 (function($) {

@@ -33,9 +33,10 @@
         parent_counter++;
         var parent = wm.createWindow({
             title: "Parent Window #" + parent_counter,
-            bodyContent: '<button type="button" class="btn btn-default new_child">Open child</button>',
+            bodyContent: $('#parent_window_body').html(),
             footerContent: '<button type="button" class="btn btn-default" data-dismiss="window">Close</button><button type="button" class="btn btn-primary">Save changes</button>'
         });
+        $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
         parent.getElement().find('.new_child').on('click', function (event) {
             event.preventDefault();
             child_counter++;
@@ -56,5 +57,6 @@
             footerContent: '<button type="button" class="btn btn-default" data-dismiss="window">Close</button><button type="button" class="btn btn-primary">Submit</button>'
         });
     });
+    
 
 }(jQuery));

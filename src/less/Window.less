@@ -6,23 +6,6 @@
 @border: #e5e5e5;
 @borderRadius: 6px;
 
-
-
-
-[data-dismiss=window] {
-    visibility: hidden;
-}
-
-.disable-shade {
-    width: 100%;
-    height: 100%;
-    position:absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(255, 255, 255, 0.5);
-    display: none;
-}
-
 .window {
     max-width: 800px;
     position: absolute;
@@ -54,6 +37,9 @@
         padding: @modal-inner-padding;
         overflow: scroll;
     }
+    .window-body.disable-scroll {
+        .disable-scroll;
+    }
     .window-footer {
         padding: 19px 20px 20px;
         margin-top: 15px;
@@ -68,6 +54,9 @@
             margin-bottom: 0;
             margin-left: 5px;
         }
+    }
+    .window-footer.disable-scroll {
+        .disable-scroll;
     }
     [data-dismiss=window] {
         visibility: visible;
@@ -89,4 +78,22 @@
 
 .window .panel-title .close {
     font-size: 16px;
+}
+
+[data-dismiss=window] {
+    visibility: hidden;
+}
+
+.disable-shade {
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: none;
+}
+
+.disable-scroll {
+    overflow: hidden;
 }
