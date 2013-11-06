@@ -17,6 +17,7 @@ var Window = null;
     };
 
     Window.prototype.initialize = function(options) {
+        var _this = this;
 
         if (this.options.fromElement) {
             if (this.options.fromElement instanceof jQuery) {
@@ -39,6 +40,29 @@ var Window = null;
 
         this.$el.css('visibility', 'hidden');
         this.$el.appendTo('body');
+        this.centerWindow();
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            $(window).bind('orientationchange resize', function(event){
+                _this.centerWindow();
+            });
+        }
+
+
+        this.initHandlers();
+        this.$el.hide();
+        this.$el.css('visibility', 'visible');
+        this.$el.fadeIn();
+        if (this.options.id) {
+            this.id = this.options.id;
+        } else {
+            this.id = '';
+        }
+
+        this.setSticky(this.options.sticky);
+
+    };
+
+    Window.prototype.centerWindow = function () {
         var top, left,
             bodyTop = parseInt($('body').position().top, 10) + parseInt($('body').css('paddingTop'), 10),
             maxHeight;
@@ -58,18 +82,6 @@ var Window = null;
 
         this.$el.css('left', left);
         this.$el.css('top', top);
-        this.initHandlers();
-        this.$el.hide();
-        this.$el.css('visibility', 'visible');
-        this.$el.fadeIn();
-        if (this.options.id) {
-            this.id = this.options.id;
-        } else {
-            this.id = '';
-        }
-
-        this.setSticky(this.options.sticky);
-
     };
 
     Window.prototype.close = function() {
