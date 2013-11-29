@@ -26,7 +26,7 @@ var Window = null;
                 bodyContent: '',
                 footerContent: ''
             };
-        this.options = $.extend(true, defaults, options);
+        this.options = $.extend(true, {}, defaults, options);
         this.initialize(this.options);
         return this;
     };
@@ -56,7 +56,12 @@ var Window = null;
         options.elements.body.html(options.bodyContent);
         options.elements.footer.html(options.footerContent);
         
+        this.undock();
 
+        this.setSticky(options.sticky);
+    };
+
+    Window.prototype.undock = function () {
         this.$el.css('visibility', 'hidden');
         this.$el.appendTo('body');
         this.centerWindow();
@@ -72,15 +77,17 @@ var Window = null;
 
         this.initHandlers();
         this.$el.hide();
-        this.$el.css('visibility', 'visible');
-        this.$el.fadeIn();
-        if (options.id) {
-            this.id = options.id;
+        if (this.options.id) {
+            this.id = this. options.id;
         } else {
             this.id = '';
         }
+        this.show();
+    };
 
-        this.setSticky(options.sticky);
+    Window.prototype.show = function () {
+        this.$el.css('visibility', 'visible');
+        this.$el.fadeIn();
     };
 
     Window.prototype.centerWindow = function () {
@@ -374,12 +381,13 @@ var Window = null;
         options = options || {};
         var newWindow,
             window_opts = {
-                fromElement: this
+                fromElement: this,
+                selectors: {}
             };
         if (typeof options === "object") {
-            if (options.handle) {
-                window_opts.handle = options.handle;
-                this.find(options.handle).css('cursor', 'move');
+            if (options.selectors.handle) {
+                window_opts.selectors.handle = options.selectors.handle;
+                this.find(options.selectors.handle).css('cursor', 'move');
             }
             if (!$(this).hasClass('window')) {
                 $(this).addClass('window');
@@ -392,6 +400,9 @@ var Window = null;
             switch (options) {
                 case "close":
                     this.data('window').close();
+                    break;
+                case "show":
+                    this.data('window').show();
                     break;
                 default:
                     break;
@@ -406,13 +417,13 @@ var Window = null;
     $('[data-window-target]').off('click');
     $('[data-window-target]').on('click', function () {
         var $this = $(this),
-            opts = {};
+            opts = {selectors:{}};
         if ($this.data('windowTitle')) {
             opts.title = $this.data('windowTitle');
         }
 
         if ($this.data('windowHandle')) {
-            opts.handle = $this.data('windowHandle');
+            opts.selectors.handle = $this.data('windowHandle');
         }
 
         $($this.data('windowTarget')).window(opts); 
