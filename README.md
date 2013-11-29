@@ -61,9 +61,10 @@ var exampleWindow = windowManager.createWindow({
 Quick Windows can be created via a simple markup API.
 
 ```html
-<a class="btn" data-window-target="#windowElementSelector" data-window-title="Window Title" data-window-handle=".handleSelector">
+<a class="btn" data-window-target="#windowElementSelector" data-window-title="Window Title" data-window-handle=".handleSelector" data-title-handle=".titleSelector">
 ```
 ## Release History
+ * 2013-11-04   v0.2.2  Fix for quick windows not being draggable, fix for quick window titles not displaying
  * 2013-11-04   v0.2.1  Fix for responsive windows on orientation change
  * 2013-11-04   v0.2.0  Windows are now responsive!
  * 2013-11-03   v0.1.1  Added support for the jQuery Plugin site

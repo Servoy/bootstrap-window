@@ -53,6 +53,9 @@ var Window = null;
         options.elements.body = this.$el.find(options.selectors.body);
         options.elements.footer = this.$el.find(options.selectors.footer);
         options.elements.title.html(options.title);
+        if (options.fromElement && _this.$el.find('[data-dismiss=window]').length <= 0) {
+            options.elements.title.append('<button class="close" data-dismiss="window">x</button>');
+        }
         options.elements.body.html(options.bodyContent);
         options.elements.footer.html(options.footerContent);
         
@@ -380,19 +383,19 @@ var Window = null;
     $.fn.window = function(options) {
         options = options || {};
         var newWindow,
-            window_opts = {
+            window_opts = $.extend({
                 fromElement: this,
                 selectors: {}
-            };
+            }, options || {});
         if (typeof options === "object") {
-            if (options.selectors.handle) {
-                window_opts.selectors.handle = options.selectors.handle;
-                this.find(options.selectors.handle).css('cursor', 'move');
+            if (window_opts.selectors.handle) {
+                this.find(window_opts.selectors.handle).css('cursor', 'move');
             }
+
             if (!$(this).hasClass('window')) {
                 $(this).addClass('window');
             }
-            newWindow = new Window(window_opts);
+            newWindow = new Window($.extend({}, window_opts, window_opts));
             this.data('window', newWindow);
             
 
@@ -420,6 +423,10 @@ var Window = null;
             opts = {selectors:{}};
         if ($this.data('windowTitle')) {
             opts.title = $this.data('windowTitle');
+        }
+
+        if ($this.data('titleHandle')) {
+            opts.selectors.title = $this.data('titleHandle');
         }
 
         if ($this.data('windowHandle')) {
