@@ -109,7 +109,7 @@ var Window = null;
             top = bodyTop;
         }
         maxHeight = ((this.options.references.window.height() - bodyTop) - (parseInt(this.options.elements.handle.css('height'), 10) + parseInt(this.options.elements.footer.css('height'), 10))) - 45;
-        this.options.elements.body.css('maxHeight', maxHeight);
+        //this.options.elements.body.css('maxHeight', maxHeight);
 
         this.$el.css('left', left);
         this.$el.css('top', top);
@@ -290,6 +290,11 @@ var Window = null;
                 }
             }
         });
+        
+        _this.options.references.body.on('mouseleave', function(event) { 
+			_this.moving = false;
+			$('body > *').removeClass('disable-select');
+		});
 
         this.$el.on('mousemove', function (event) {
             if (_this.options.blocker) {

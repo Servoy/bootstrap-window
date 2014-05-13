@@ -109,7 +109,7 @@ var Window = null;
             top = bodyTop;
         }
         maxHeight = ((this.options.references.window.height() - bodyTop) - (parseInt(this.options.elements.handle.css('height'), 10) + parseInt(this.options.elements.footer.css('height'), 10))) - 45;
-        this.options.elements.body.css('maxHeight', maxHeight);
+        //this.options.elements.body.css('maxHeight', maxHeight);
 
         this.$el.css('left', left);
         this.$el.css('top', top);
@@ -290,6 +290,11 @@ var Window = null;
                 }
             }
         });
+        
+        _this.options.references.body.on('mouseleave', function(event) { 
+			_this.moving = false;
+			$('body > *').removeClass('disable-select');
+		});
 
         this.$el.on('mousemove', function (event) {
             if (_this.options.blocker) {
@@ -439,9 +444,11 @@ var Window = null;
 ;var WindowManager = null;
 (function($) {
     "use strict";
+    var zIndexIncrement =100;
     WindowManager = function(options) {
         this.windows = [];
         options = options || {};
+        this.modalStack = [];
         this.initialize(options);
         return this;
     };
@@ -459,6 +466,8 @@ var Window = null;
 
     WindowManager.prototype.destroyWindow = function(window_handle) {
         var _this = this;
+        //TODO CHECK isMOdal option
+        this.removeModal(window_handle);
         $.each(this.windows, function(index, window) {
             if (window === window_handle) {
                 _this.windows.splice(index, 1);
@@ -471,8 +480,14 @@ var Window = null;
         var startZIndex = 900;
         $.each(this.windows, function(index, window) {
 
-            window.setIndex(startZIndex + index);
+            window.setIndex(startZIndex + index*zIndexIncrement);
         });
+        if(this.windows.length>0){
+			//update modal backdrop z-index.
+			var lastWindowZindex = parseInt(this.windows[this.windows.length-1].$el.css('z-index'));
+			var backdrop = $('.modal-backdrop');
+			if(backdrop)backdrop.css('z-index',lastWindowZindex-1);
+        }
     };
 
     WindowManager.prototype.setFocused = function(focused_window) {
@@ -498,6 +513,9 @@ var Window = null;
         this.options = options;
         if (this.options.container) {
             $(this.options.container).addClass('window-pane');
+        }
+        if(!this.options.backdrop){
+            this.options.modalBackdrop =$("<div class='modal-backdrop fade' style='z-index:899'></div>");
         }
     };
 
@@ -546,10 +564,37 @@ var Window = null;
         if (this.options.windowTemplate && !final_options.template) {
             final_options.template = this.options.windowTemplate;
         }
-
+        $.extend( final_options ,this.options);
         var newWindow = new Window(final_options);
-        
-        
+        if(final_options.isModal) {
+			this.addModal(newWindow);
+         }                  
         return this.addWindow(newWindow);
     };
+    
+    WindowManager.prototype.addModal = function(windowObj) {
+		/*PRIVATE FUNCTION*/
+		if(this.modalStack.length  === 0) {
+			$('body').append(windowObj.options.modalBackdrop.clone());
+			setTimeout(function(){
+				$('.modal-backdrop').addClass('in');  // TODO make this code only for default backdrop (if none is supplied) , in an event like 'onShow(win)'
+			},50);
+		}
+		this.modalStack.push(windowObj);
+	};
+	WindowManager.prototype.removeModal = function(windowObj) {
+		/*PRIVATE FUNCTION*/
+		var i = this.modalStack.indexOf(windowObj);
+			if(i != -1) {
+				this.modalStack.splice(i, 1);
+				//also remove from dom with animation
+				if(this.modalStack.length === 0){
+					var backdrop = $('.modal-backdrop');  // TODO make this code only for default backdrop (if none is supplied) , in an event like 'onRemove(win)'
+					backdrop.removeClass('in');
+					setTimeout(function(){ 
+						backdrop.remove();
+					},50);
+				}
+			}
+	};
 }(jQuery));
