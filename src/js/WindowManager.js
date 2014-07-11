@@ -23,7 +23,7 @@ var WindowManager = null;// jshint ignore:line
 
     WindowManager.prototype.destroyWindow = function(window_handle) {
         var _this = this;
-        //TODO CHECK isMOdal option
+
         this.removeModal(window_handle);
         $.each(this.windows, function(index, window) {
             if (window === window_handle) {
@@ -64,6 +64,17 @@ var WindowManager = null;// jshint ignore:line
         focused_window.setActive(true);
         this.resortWindows();
 
+    };
+    /**
+     * moves the winow to the back of the stack (stops at the first modal window)
+     * */
+    WindowManager.prototype.sendToBack = function(window) {
+    	 //move the BS window instance to the front of the array
+    	 var from = this.windows.indexOf(window);
+    	 var toWindow = this.modalStack.length > 0 ? this.modalStack[this.modalStack.length-1] : null;
+    	 var to = toWindow ? this.windows.indexOf(toWindow)+1: 0;
+    	 this.windows.splice(to/*to*/, 0, this.windows.splice(from, 1)[0]);
+    	 this.setFocused(this.windows[this.windows.length-1]);
     };
 
     WindowManager.prototype.initialize = function(options) {
